@@ -9,6 +9,7 @@ import java.io.Serializable;
 @MappedSuperclass // Used to tell JPA this will be inherited, but should not be mapped to the database
 public class BaseEntity implements Serializable {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
