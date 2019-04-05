@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+    <body>
+
+        <h2>Owner Information</h2>
+
+        <table class="table table-striped" th:object="${owner}">
+            <tr>
+                <th>Name</th>
+                <th><b th:text="*{address}"></b></th>
+            </tr>
+            <tr>
+                <th>City</th>
+                <th><b th:text="*{city}"></b></th>
+            </tr>
+            <tr>
+                <th>Telephone</th>
+                <th><b th:text="*{phone}"></b></th>
+            </tr>
+        </table>
+
+        <a th:tref="@{{id}/edit(id=${owner.id})}" class="btn btn-default"> Edit Owner</a>
+        <a th:tref="@{{id}/pets/new(id=${owner.id})}" class="btn btn-default"> Add New Pet</a>
+
+        <br />
+        <br />
+        <br />
+        <h2>Pets and Visits</h2>
+
+        <table class="table table-striped">
+            <tr th:each="pet : ${owner.pets}">
+                <td valign="top">
+                    <dl class="dl-horizontal">
+                        <dt>Name</dt>
+                        <dd th:text="${pet.name}"></dd>
+                        <dt>Birth Date</dt>
+                        <dd th:text="${#temporals.format(pet.birthDate, 'yyy-MM-dd')}"></dd>
+                        <dt>Type</dt>
+
+                        <dd th:text=""${pet.type}></dd>
+
+                    </dl>
+                </td>
+
+                <td>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Visit Date</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="visit : ${pet.visits}">
+                            <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${visit?.description}"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a th:href="@{ownerId}/pets/{petId}/edit(ownerId=${owner.id},petId=${pet.id})}">Edit Pet </a>
+                            </td>
+                            <td>
+                                <a th:href="@{ownerId}/pets/{petId}/visits/new(ownerId=${owner.id},petId=${pet.id})}">Add Visit </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+    </body>
+</html>
