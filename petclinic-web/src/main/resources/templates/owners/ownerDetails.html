@@ -9,7 +9,11 @@
         <table class="table table-striped" th:object="${owner}">
             <tr>
                 <th>Name</th>
-                <th><b th:text="*{address}"></b></th>
+                <td><b th:text="*{firstName + ' ' + lastName}"></b></td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td th:text="*{address}" /></td>
             </tr>
             <tr>
                 <th>City</th>
