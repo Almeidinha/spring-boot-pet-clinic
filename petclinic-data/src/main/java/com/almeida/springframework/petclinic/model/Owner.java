@@ -40,7 +40,14 @@ public class Owner extends Person {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private Set<Pet> pets = new HashSet<>();
 
-    public  Pet getPet(String name) {
+    public void addPet(Pet pet) {
+        if (pet.isNew()) {
+            this.getPets().add(pet);
+        }
+        pet.setOwner(this);
+    }
+
+    public Pet getPet(String name) {
         return getPet(name, false);
     }
 
@@ -53,7 +60,6 @@ public class Owner extends Person {
                 .findAny().orElse(null);
 
     }*/
-
     public Pet getPet(String name, boolean ignoreNew) {
         name = name.toLowerCase();
         for (Pet pet : pets) {

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -19,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -56,8 +56,8 @@ class PetControllerTest {
 
     @Test
     void initCreationForm() throws Exception {
-        Mockito.when(ownerService.findById(Mockito.anyLong())).thenReturn(owner);
-        Mockito.when(petTypeService.findAll()).thenReturn(petTypes);
+        when(ownerService.findById(anyLong())).thenReturn(owner);
+        when(petTypeService.findAll()).thenReturn(petTypes);
 
         mockMvc.perform(get("/owners/1/pets/new"))
                 .andExpect(status().isOk())
@@ -68,21 +68,21 @@ class PetControllerTest {
 
     @Test
     void processCreationForm() throws Exception {
-        Mockito.when(ownerService.findById(Mockito.anyLong())).thenReturn(owner);
-        Mockito.when(petTypeService.findAll()).thenReturn(petTypes);
+        when(ownerService.findById(anyLong())).thenReturn(owner);
+        when(petTypeService.findAll()).thenReturn(petTypes);
 
         mockMvc.perform(post("/owners/1/pets/new"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/owners/1"));
 
-        Mockito.verify(petService).save(Mockito.any());
+        verify(petService).save(any());
     }
 
     @Test
     void initUpdateForm() throws Exception {
-        Mockito.when(ownerService.findById(Mockito.anyLong())).thenReturn(owner);
-        Mockito.when(petTypeService.findAll()).thenReturn(petTypes);
-        Mockito.when(petService.findById(Mockito.anyLong())).thenReturn(Pet.builder().id(2l).build());
+        when(ownerService.findById(anyLong())).thenReturn(owner);
+        when(petTypeService.findAll()).thenReturn(petTypes);
+        when(petService.findById(anyLong())).thenReturn(Pet.builder().id(2l).build());
 
         mockMvc.perform(get("/owners/1/pets/2/edit"))
                 .andExpect(status().isOk())
@@ -93,27 +93,14 @@ class PetControllerTest {
 
     @Test
     void processUpdateForm() throws Exception {
-        Mockito.when(ownerService.findById(Mockito.anyLong())).thenReturn(owner);
-        Mockito.when(petTypeService.findAll()).thenReturn(petTypes);
+        when(ownerService.findById(anyLong())).thenReturn(owner);
+        when(petTypeService.findAll()).thenReturn(petTypes);
 
         mockMvc.perform(post("/owners/1/pets/2/edit"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/owners/1"));
 
-        Mockito.verify(petService).save(Mockito.any());
+        verify(petService).save(any());
     }
 
-
-
-    @Test
-    void populatePetType() {
-    }
-
-    @Test
-    void findOwner() {
-    }
-
-    @Test
-    void initOwnerBinder() {
-    }
 }
