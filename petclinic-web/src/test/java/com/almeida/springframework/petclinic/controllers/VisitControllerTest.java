@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.UriTemplate;
@@ -47,6 +46,7 @@ class VisitControllerTest {
     private MockMvc mockMvc;
 
     private final UriTemplate visitsUriTemplate = new UriTemplate("/owners/{ownerId}/pets/{petId}/visits/new");
+
     private final Map<String, String> uriVariables = new HashMap<>();
     private URI visitsUri;
 
@@ -80,11 +80,6 @@ class VisitControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(visitController).build();
     }
 
-
-    @Test
-    void loadPetWithVisit() {
-    }
-
     @Test
     void initNewVisitForm() throws Exception {
         mockMvc.perform(get(visitsUri))
@@ -95,10 +90,7 @@ class VisitControllerTest {
 
     @Test
     void processNewVisitForm() throws Exception {
-        mockMvc.perform(post(visitsUri)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("date","2018-11-11")
-                .param("description", YET_ANOTHER_VISIT_DESCRIPTION))
+        mockMvc.perform(post(visitsUri))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(REDIRECT_OWNERS_1))
                 .andExpect(model().attributeExists("visit"))
